@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="bn" data-theme="">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Retail Mart BD — Facebook Shop</title>
+  <meta name="description" content="Retail Mart BD — Facebook ই-কমার্সের জন্য ডাইনামিক মোবাইল ওয়েবঅ্যাপ। সার্চ, ফিল্টার, সোর্ট, WhatsApp Checkout, Messenger/FB Deep Link, PWA + Offline।">
+  <meta name="theme-color" content="#0ea5e9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0b1324" media="(prefers-color-scheme: dark)">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="data:image/svg+xml;utf8,<?xml version='1.0' encoding='UTF-8'?><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'><rect width='128' height='128' rx='24' fill='%230ea5e9'/><text x='50%' y='58%' dominant-baseline='middle' text-anchor='middle' font-family='Segoe UI,Arial' font-weight='700' font-size='56' fill='white'>RM</text></svg>">
+
+  <style>
+    :root{
+      --pri:#0ea5e9; --pri-600:#0284c7; --accent:#f59e0b;
+      --bg:#f7fbff; --card:#ffffff; --muted:#64748b; --txt:#0f172a;
+      --line:#e6eef6; --shadow:0 10px 30px rgba(2,8,23,.08);
+      --radius:16px; --r-sm:12px;
+    }
+    html[data-theme="dark"]{
+      --bg:#0b1324; --card:#121a2e; --muted:#8ea2c4; --txt:#e6eef6; --line:#1e2b49; --shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, "Noto Sans Bengali", "Hind Siliguri","SolaimanLipi", sans-serif;
+      background:var(--bg); color:var(--txt);
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+
+    .container{width:min(1100px,92%);margin:0 auto}
+
+    /* Topbar */
+    .topbar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.65);backdrop-filter:saturate(180%) blur(10px); border-bottom:1px solid var(--line)}
+    html[data-theme="dark"] .topbar{background:rgba(18,26,46,.6)}
+    .topbar-inner{display:flex;align-items:center;justify-content:space-between;padding:10px 0}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{
+      width:40px;height:40px;border-radius:12px;display:grid;place-items:center;
+      background: radial-gradient(120% 120% at 20% 20%, #7dd3fc 0%, #0ea5e9 50%, #0369a1 100%);
+      color:#fff;font-weight:800;box-shadow:var(--shadow)
+    }
+    .brand-title{font-weight:900}
+    .tagline{font-size:12px;color:var(--muted)}
+    .top-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;border:1px solid var(--line);
+      background:var(--card);color:var(--txt);font-weight:800
+    }
+    .btn-primary{background:var(--pri);color:#fff;border-color:transparent;box-shadow:0 6px 16px rgba(14,165,233,.25)}
+    .btn:active{transform:translateY(1px)}
+    .icon{width:18px;height:18px;display:inline-block}
+    .chip-row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 0}
+    .chip{padding:8px 12px;border-radius:999px;border:1px dashed var(--line);background:var(--card);font-weight:700;color:var(--txt);cursor:pointer}
+    .chip.active{background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;border-color:transparent}
+
+    /* Hero */
+    .hero{padding:18px 0}
+    .hero-card{background:linear-gradient(135deg,#ffffff 0%, #f0f9ff 100%); border:1px solid var(--line);border-radius:20px;padding:16px;box-shadow:var(--shadow)}
+    html[data-theme="dark"] .hero-card{background:linear-gradient(135deg,#0e1730 0%, #0b1324 100%)}
+
+    .searchbar{margin:14px 0 6px; position:relative}
+    .searchbar input{
+      width:100%;padding:14px 44px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--txt);font-size:14px;box-shadow:var(--shadow);outline:none
+    }
+    .searchbar .sicon{position:absolute;left:14px;top:50%;transform:translateY(-50%);opacity:.65}
+    .searchbar .clear-btn{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;border:none;opacity:.7}
+
+    /* Filters */
+    .filterbar{display:flex;gap:8px;align-items:center;justify-content:space-between;margin:10px 0 6px;flex-wrap:wrap}
+    .select, .toggle{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+
+    /* Grid */
+    .grid{display:grid;gap:12px}
+    @media(min-width:540px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media(min-width:900px){.grid{grid-template-columns:repeat(3,1fr)}}
+
+    .card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;position:relative}
+    .media{position:relative;aspect-ratio:1/1;background:#eaf2fb}
+    html[data-theme="dark"] .media{background:#0f1831}
+    .badge{position:absolute;left:10px;top:10px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-size:12px;padding:6px 10px;border-radius:999px;font-weight:800}
+    .fav{position:absolute;right:10px;top:10px;background:rgba(255,255,255,.9);border:1px solid var(--line);border-radius:999px;padding:6px;cursor:pointer}
+    html[data-theme="dark"] .fav{background:rgba(0,0,0,.35)}
+    .card-body{padding:12px}
+    .title{font-weight:900;margin:0 0 6px}
+    .muted{color:var(--muted)}
+    .price-row{display:flex;align-items:center;gap:10px;margin:6px 0 10px}
+    .price{font-weight:900}
+    .old{color:#94a3b8;text-decoration:line-through}
+    .actions{display:flex;gap:8px;margin-top:auto;padding:0 12px 12px}
+    .btn-sm{padding:10px 12px;border-radius:12px;font-weight:800;font-size:13px}
+    .btn-ghost{background:transparent}
+    .empty{padding:20px;text-align:center;color:var(--muted)}
+
+    /* Skeleton */
+    .sk{position:relative;overflow:hidden;background:linear-gradient(90deg, rgba(180,196,212,.2), rgba(180,196,212,.35), rgba(180,196,212,.2));animation:shimmer 1.2s infinite}
+    html[data-theme="dark"] .sk{background:linear-gradient(90deg, rgba(255,255,255,.05), rgba(255,255,255,.12), rgba(255,255,255,.05))}
+    @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+    .skeleton-card{border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);background:var(--card)}
+    .s-media{aspect-ratio:1/1}
+    .s-t1,.s-t2{height:12px;border-radius:8px;margin:10px}
+    .s-t1{width:70%}.s-t2{width:40%}
+
+    /* Bottom bar */
+    .bottom-bar{position:sticky;bottom:0;background:var(--card);border-top:1px solid var(--line);z-index:40;display:grid;grid-template-columns:repeat(4,1fr)}
+    .bb-item{display:flex;flex-direction:column;gap:4px;align-items:center;justify-content:center;padding:10px 0;color:var(--txt);font-size:12px}
+    .bb-item:active{background:rgba(14,165,233,.08)}
+
+    /* Toast / Update / Install */
+    .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:12px;padding:10px 14px;z-index:60;display:none}
+    .update-bar{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);background:#0ea5e9;color:#fff;padding:10px 14px;border-radius:12px;box-shadow:0 6px 18px rgba(14,165,233,.4);display:none;z-index:60}
+    .install-btn{display:none}
+
+    footer{padding:20px 0 90px 0;color:var(--muted);font-size:12px}
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <div class="logo">🛍️</div>
+        <div>
+          <div class="brand-title" id="brandTitle">Retail Mart BD</div>
+          <div class="tagline" id="brandTag">অরিজিনাল প্রোডাক্ট • ফাস্ট ডেলিভারি</div>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="btn" onclick="openFacebookPage()">FB Page</button>
+        <button class="btn" onclick="openMessenger()">Messenger</button>
+        <a id="callNow" class="btn" href="tel:+8801332600240">Call</a>
+        <button id="themeToggle" class="btn" title="Toggle theme">🌓</button>
+        <button id="installBtn" class="btn btn-primary install-btn">Install App</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-card">
+          <h1 style="margin:0 0 6px">Retail Mart BD — Facebook Shop</h1>
+          <p class="muted" style="margin:0 0 10px">ক্যাশ অন ডেলিভারি • ২৪/৭ ইনবক্স সাপোর্ট • দ্রুত ডেলিভারি</p>
+
+          <div class="searchbar">
+            <svg class="sicon" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.2-4.2M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+            <input id="searchInput" type="search" placeholder="প্রোডাক্ট খুঁজুন... (উদাহরণ: shoe, watch, bag)">
+            <button class="clear-btn" id="clearSearch">✕</button>
+          </div>
+
+          <div class="chip-row" id="chipRow"></div>
+
+          <div class="filterbar">
+            <select id="sortSelect" class="select">
+              <option value="newest">নতুন প্রথম</option>
+              <option value="priceAsc">দাম: কম থেকে বেশি</option>
+              <option value="priceDesc">দাম: বেশি থেকে কম</option>
+            </select>
+            <label class="toggle"><input type="checkbox" id="favOnly"> শুধু ফেভারিট</label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div id="grid" class="grid"></div>
+        <div id="emptyState" class="empty" style="display:none">কিছু পাওয়া যায়নি। সার্চ/ফিল্টার পরিবর্তন করে দেখুন।</div>
+
+        <!-- Skeletons -->
+        <div id="skeletons" class="grid" aria-hidden="true">
+          <div class="skeleton-card">
+            <div class="s-media sk"></div>
+            <div class="s-t1 sk"></div>
+            <div class="s-t2 sk"></div>
+          </div>
+          <div class="skeleton-card">
+            <div class="s-media sk"></div>
+            <div class="s-t1 sk"></div>
+            <div class="s-t2 sk"></div>
+          </div>
+          <div class="skeleton-card">
+            <div class="s-media sk"></div>
+            <div class="s-t1 sk"></div>
+            <div class="s-t2 sk"></div>
+          </div>
+        </div>
+
+        <!-- Infinite scroll sentinel -->
+        <div id="sentinel" style="height:1px"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="hero-card">
+          <h3 style="margin:0 0 10px">আমাদের ফেসবুক পেজ</h3>
+          <div id="fb-root"></div>
+          <div class="fb-page"
+               data-href="https://www.facebook.com/RetailBDMart"
+               data-tabs="timeline"
+               data-width="500"
+               data-height="420"
+               data-small-header="true"
+               data-adapt-container-width="true"
+               data-hide-cover="false"
+               data-show-facepile="true">
+            <blockquote cite="https://www.facebook.com/RetailBDMart" class="fb-xfbml-parse-ignore">
+              <a href="https://www.facebook.com/RetailBDMart">Retail Mart BD</a>
+            </blockquote>
+          </div>
+          <div class="chip-row" style="margin-top:10px">
+            <a class="btn btn-primary" href="#" onclick="openFacebookPage();return false;">পেজ খুলুন</a>
+            <a class="btn" href="#" onclick="openMessenger();return false;">মেসেঞ্জার</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Bottom action bar -->
+  <nav class="bottom-bar">
+    <a class="bb-item" href="#" onclick="scrollToTop();return false;">⬆️ Home</a>
+    <a class="bb-item" href="#" onclick="openFacebookShop();return false;">🛒 Shop</a>
+    <a class="bb-item" href="#" onclick="openMessenger();return false;">💬 Chat</a>
+    <a class="bb-item" href="#" onclick="openWhatsApp();return false;">🟢 WhatsApp</a>
+  </nav>
+
+  <footer>
+    <div class="container">© <span id="year"></span> <span id="brandNameFooter">Retail Mart BD</span>. সকল অধিকার সংরক্ষিত।</div>
+  </footer>
+
+  <div id="toast" class="toast"></div>
+  <div id="updateBar" class="update-bar">
+    আপডেট পাওয়া গেছে — <button class="btn btn-ghost btn-sm" onclick="reloadForUpdate()">Reload</button>
+  </div>
+
+  <!-- Facebook SDK (Page Plugin এর জন্য) -->
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v19.0"></script>
+
+  <script>
+  // ====== CONFIG (Fallback) ======
+  const DEFAULT_CONFIG = {
+    brandName: "Retail Mart BD",
+    tagline: "অরিজিনাল প্রোডাক্ট • ফাস্ট ডেলিভারি",
+    pageUsername: "RetailBDMart",
+    pageId: "", // থাকলে দিন (সংখ্যা), না হলে খালি রাখুন
+    phone: "+8801332600240",
+    whatsapp: "8801332600240",
+    shopUrl: "https://www.facebook.com/RetailBDMart/shop",
+    messengerUrl: "https://m.me/RetailBDMart",
+    version: 1
+  };
+  const CONFIG_URL = "data/app-config.json"; // Remote config (ঐচ্ছিক)
+  let CONFIG = {...DEFAULT_CONFIG};
+
+  // ====== STATE ======
+  let ALL_PRODUCTS = [];
+  let FILTERED = [];
+  let page = 0, perPage = 9;
+  let activeTag = null;
+  let favOnly = false;
+  let favs = new Set(JSON.parse(localStorage.getItem('rmbd:favs')||"[]"));
+  let beforeInstallEvent = null;
+  let swReg = null; // service worker registration for update
+  const fmtBDT = n => "৳ " + (Number(n)||0).toLocaleString('en-IN');
+
+  // ====== DOM ======
+  const $ = s=>document.querySelector(s);
+  const grid = $("#grid");
+  const skeletons = $("#skeletons");
+  const sentinel = $("#sentinel");
+  const chipRow = $("#chipRow");
+  const toastEl = $("#toast");
+  const updateBar = $("#updateBar");
+  const brandTitle = $("#brandTitle");
+  const brandTag = $("#brandTag");
+  const brandFooter = $("#brandNameFooter");
+  const callNow = $("#callNow");
+  const installBtn = $("#installBtn");
+
+  // ====== THEME ======
+  (function initTheme(){
+    const saved = localStorage.getItem('rmbd:theme');
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute('data-theme', saved || (prefersDark ? 'dark' : ''));
+    $("#themeToggle").addEventListener('click', ()=>{
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? '' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('rmbd:theme', next);
+    });
+  })();
+
+  // ====== HELPERS ======
+  function showToast(msg, ms=2200){
+    toastEl.textContent = msg;
+    toastEl.style.display = 'block';
+    setTimeout(()=> toastEl.style.display='none', ms);
+  }
+  function tryOpen(primary, fallback){
+    // Deep link with graceful fallback
+    const now = Date.now();
+    window.location.href = primary;
+    setTimeout(()=>{ if(Date.now()-now<1200) window.location.href = fallback; }, 700);
+  }
+  function openFacebookPage(){
+    const uname = CONFIG.pageUsername;
+    const pid = CONFIG.pageId;
+    const deep = pid ? `fb://page/${pid}` : `fb://facewebmodal/f?href=https://www.facebook.com/${uname}`;
+    tryOpen(deep, `https://www.facebook.com/${uname}`);
+  }
+  function openFacebookShop(){
+    const web = CONFIG.shopUrl || `https://www.facebook.com/${CONFIG.pageUsername}/shop`;
+    tryOpen(`fb://facewebmodal/f?href=${encodeURIComponent(web)}`, web);
+  }
+  function openMessenger(){
+    const pid = CONFIG.pageId;
+    const uname = CONFIG.pageUsername;
+    const deep = pid ? `fb-messenger://user-thread/${pid}` : `fb-messenger://share`;
+    const web = CONFIG.messengerUrl || `https://m.me/${uname}`;
+    tryOpen(deep, web);
+  }
+  function openWhatsApp(text){
+    const num = (CONFIG.whatsapp || '').replace(/[^\d]/g,'');
+    const t = text || "হ্যালো! আমি একটি প্রোডাক্ট নিতে চাই।";
+    window.location.href = `https://wa.me/${num}?text=${encodeURIComponent(t)}`;
+  }
+  function scrollToTop(){ window.scrollTo({top:0, behavior:'smooth'}); }
+
+  // ====== CONFIG APPLY ======
+  function applyConfig(c){
+    brandTitle.textContent = c.brandName;
+    brandTag.textContent = c.tagline;
+    brandFooter.textContent = c.brandName;
+    callNow.setAttribute('href', 'tel:' + (c.phone||'').replace(/\s/g,''));
+    // FB Page plugin href
+    const fb = document.querySelector('.fb-page');
+    if(fb && c.pageUsername){
+      fb.setAttribute('data-href', `https://www.facebook.com/${c.pageUsername}`);
+      // রি-রেন্ডার করার জন্য SDK থাকলে আবার parse করুন
+      if(window.FB && FB.XFBML) FB.XFBML.parse();
+    }
+  }
+
+  // ====== DATA LOADERS ======
+  const FALLBACK_PRODUCTS = [
+    {id:"p1", name:"প্রিমিয়াম স্নিকার্স", price:2390, oldPrice:2990, tags:["shoe","men","sneaker"], image:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop", fbPost:"https://www.facebook.com/RetailBDMart/posts/1001", badge:"-20%"},
+    {id:"p2", name:"ক্লাসিক রিস্টওয়াচ", price:1990, tags:["watch","men","accessories"], image:"https://images.unsplash.com/photo-1518544801976-3e188ea1f57c?q=80&w=1200&auto=format&fit=crop", fbPost:"https://www.facebook.com/RetailBDMart/posts/1002", badge:"নতুন"},
+    {id:"p3", name:"লেদার টোট ব্যাগ", price:2790, tags:["bag","women","leather"], image:"https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=1200&auto=format&fit=crop", fbPost:"https://www.facebook.com/RetailBDMart/posts/1003"},
+    {id:"p4", name:"ওয়্যারলেস হেডফোন", price:1590, tags:["headphone","gadget","electronics"], image:"https://images.unsplash.com/photo-1518444057429-831788f0d8a5?q=80&w=1200&auto=format&fit=crop", fbPost:"https://www.facebook.com/RetailBDMart/posts/1004"},
+    {id:"p5", name:"সিগনেচার পারফিউম", price:990, tags:["perfume","fragrance","unisex"], image:"https://images.unsplash.com/photo-1523293182086-7651a899d37f?q=80&w=1200&auto=format&fit=crop", fbPost:"https://www.facebook.com/RetailBDMart/posts/1005"},
+    {id:"p6", name:"ওভারসাইজড টি-শার্ট", price:790, tags:["tshirt","men","fashion"], image:"https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1200&auto=format&fit=crop", fbPost:"https://www.facebook.com/RetailBDMart/posts/1006"},
+    {id:"p7", name:"স্পোর্টস জুতো", price:1890, tags:["shoe","sports","men"], image:"https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?q=80&w=1200&auto=format&fit=crop", fbPost:"https://www.facebook.com/RetailBDMart/posts/1007"},
+    {id:"p8", name:"স্মার্টফোন কভার", price:290, tags:["accessories","mobile"], image:"https://images.unsplash.com/photo-1585386959984-a41552231635?q=80&w=1200&auto=format&fit=crop", fbPost:"https://www.facebook.com/RetailBDMart/posts/1008"}
+  ];
+
+  async function fetchJSON(url){
+    try{
+      const res = await fetch(url, {cache:'no-store'});
+      if(!res.ok) throw new Error(res.status);
+      return await res.json();
+    }catch(e){ return null; }
+  }
+
+  async function loadConfig(){
+    const remote = await fetchJSON(CONFIG_URL);
+    if(remote && remote.brandName){
+      // যদি ভার্সন বদলায়, টোস্ট দেখাতে পারেন ইচ্ছা করলে
+      CONFIG = {...DEFAULT_CONFIG, ...remote};
+      applyConfig(CONFIG);
+    }else{
+      CONFIG = {...DEFAULT_CONFIG};
+      applyConfig(CONFIG);
+    }
+  }
+
+  async function loadProducts(){
+    skeletons.style.display = 'grid';
+    const data = await fetchJSON('data/products.json');
+    ALL_PRODUCTS = Array.isArray(data) && data.length ? data : FALLBACK_PRODUCTS;
+    skeletons.style.display = 'none';
+    buildChips(ALL_PRODUCTS);
+    applyFilters(); // initial
+  }
+
+  // ====== CHIPS (tags) ======
+  function buildChips(list){
+    const freq = {};
+    list.forEach(p=> (p.tags||[]).forEach(t=>{freq[t]=(freq[t]||0)+1;}));
+    const popular = Object.keys(freq).sort((a,b)=>freq[b]-freq[a]).slice(0,8);
+    chipRow.innerHTML = '';
+    const mk = (label,tag)=>{
+      const a = document.createElement('button');
+      a.className = 'chip' + (tag===activeTag?' active':'');
+      a.textContent = label;
+      a.onclick = ()=>{ activeTag = (activeTag===tag?null:tag); refreshChips(); applyFilters(true); };
+      return a;
+    };
+    chipRow.appendChild(mk('All', null));
+    popular.forEach(t=> chipRow.appendChild(mk(t, t)));
+  }
+  function refreshChips(){
+    chipRow.querySelectorAll('.chip').forEach(ch=> ch.classList.remove('active'));
+    const target = Array.from(chipRow.querySelectorAll('.chip')).find(ch=> (ch.textContent=== (activeTag||'All')));
+    if(target) target.classList.add('active');
+  }
+
+  // ====== FILTER / SORT / RENDER ======
+  const searchInput = $("#searchInput");
+  const clearSearch = $("#clearSearch");
+  const sortSelect = $("#sortSelect");
+  const favOnlyChk = $("#favOnly");
+  let debounceTimer;
+
+  searchInput.addEventListener('input', ()=>{
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(()=> applyFilters(true), 220);
+    clearSearch.style.display = searchInput.value ? 'block' : 'none';
+  });
+  clearSearch.addEventListener('click', ()=>{ searchInput.value=''; applyFilters(true); clearSearch.style.display='none'; });
+  sortSelect.addEventListener('change', ()=> applyFilters(true));
+  favOnlyChk.addEventListener('change', ()=>{ favOnly = favOnlyChk.checked; applyFilters(true); });
+
+  function applyFilters(resetPage=false){
+    const q = (searchInput.value||'').toLowerCase().trim();
+    let list = ALL_PRODUCTS.slice();
+    if(q){
+      list = list.filter(p=>{
+        const t = (p.tags||[]).join(',').toLowerCase();
+        const n = (p.name||'').toLowerCase();
+        return t.includes(q) || n.includes(q);
+      });
+    }
+    if(activeTag) list = list.filter(p=> (p.tags||[]).map(String).includes(activeTag));
+    if(favOnly) list = list.filter(p=> favs.has(p.id));
+
+    // sort
+    const s = sortSelect.value;
+    if(s==='priceAsc') list.sort((a,b)=>(a.price||0)-(b.price||0));
+    else if(s==='priceDesc') list.sort((a,b)=>(b.price||0)-(a.price||0));
+    else list.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)); // newest default
+
+    FILTERED = list;
+    if(resetPage) page = 0;
+    grid.innerHTML = '';
+    $("#emptyState").style.display = list.length? 'none':'block';
+    renderNext();
+  }
+
+  function renderNext(){
+    const start = page*perPage;
+    const end = start + perPage;
+    const slice = FILTERED.slice(start, end);
+    if(!slice.length) return;
+    const frag = document.createDocumentFragment();
+    slice.forEach(p=> frag.appendChild(renderCard(p)));
+    grid.appendChild(frag);
+    page++;
+  }
+
+  function renderCard(p){
+    const art = document.createElement('article');
+    art.className = 'card';
+    const badge = p.badge ? `<span class="badge">${p.badge}</span>` : '';
+    const favActive = favs.has(p.id) ? '❤️' : '🤍';
+    art.innerHTML = `
+      <div class="media">
+        ${badge}
+        <button class="fav" title="Favorite">${favActive}</button>
+        <img loading="lazy" src="${p.image}" alt="${escapeHtml(p.name||'Product')}">
+      </div>
+      <div class="card-body">
+        <h3 class="title">${escapeHtml(p.name||'Unnamed')}</h3>
+        <div class="price-row">
+          <div class="price">${fmtBDT(p.price)}</div>
+          ${p.oldPrice? `<div class="old">${fmtBDT(p.oldPrice)}</div>`:''}
+        </div>
+        <p class="muted">${(p.tags||[]).join(' • ')}</p>
+      </div>
+      <div class="actions">
+        <a class="btn btn-sm btn-primary" href="#" data-act="fb">Facebook এ কিনুন</a>
+        <a class="btn btn-sm" href="#" data-act="wa">WhatsApp</a>
+        <a class="btn btn-sm btn-ghost" href="#" data-act="msg">ইনবক্স</a>
+      </div>
+    `;
+    // Events
+    const favBtn = art.querySelector('.fav');
+    favBtn.onclick = ()=>{
+      if(favs.has(p.id)) favs.delete(p.id); else favs.add(p.id);
+      localStorage.setItem('rmbd:favs', JSON.stringify(Array.from(favs)));
+      favBtn.textContent = favs.has(p.id) ? '❤️' : '🤍';
+    };
+    art.querySelector('[data-act="fb"]').onclick = (e)=>{ e.preventDefault(); buyOnFacebook(p.fbPost || CONFIG.shopUrl); };
+    art.querySelector('[data-act="wa"]').onclick = (e)=>{
+      e.preventDefault();
+      const msg = `হ্যালো Retail Mart BD,\nআমি নিতে চাই: ${p.name}\nদাম: ${fmtBDT(p.price)}\nলিংক: ${p.fbPost || CONFIG.shopUrl}\nধন্যবাদ।`;
+      openWhatsApp(msg);
+    };
+    art.querySelector('[data-act="msg"]').onclick = (e)=>{ e.preventDefault(); openMessenger(); };
+    return art;
+  }
+
+  function buyOnFacebook(postUrl){
+    tryOpen(`fb://facewebmodal/f?href=${encodeURIComponent(postUrl)}`, postUrl);
+  }
+
+  function escapeHtml(s){ return String(s).replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;' }[m])); }
+
+  // ====== INFINITE SCROLL ======
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting) renderNext(); });
+  }, {rootMargin:'600px'});
+  io.observe(sentinel);
+
+  // ====== INSTALL (PWA) ======
+  window.addEventListener('beforeinstallprompt',(e)=>{
+    e.preventDefault();
+    beforeInstallEvent = e;
+    installBtn.style.display = 'inline-flex';
+  });
+  installBtn.addEventListener('click', async ()=>{
+    if(!beforeInstallEvent) return;
+    beforeInstallEvent.prompt();
+    const { outcome } = await beforeInstallEvent.userChoice;
+    showToast(outcome==='accepted' ? '✅ App installed' : '❌ Install dismissed');
+    beforeInstallEvent = null;
+    installBtn.style.display = 'none';
+  });
+
+  // ====== SW REGISTER & UPDATE ======
+  if('serviceWorker' in navigator){
+    window.addEventListener('load', async ()=>{
+      try{
+        swReg = await navigator.serviceWorker.register('sw.js');
+        // Listen for update
+        if(swReg.waiting) showUpdateBar();
+        swReg.addEventListener('updatefound', ()=>{
+          const newWorker = swReg.installing;
+          newWorker.addEventListener('statechange', ()=>{
+            if(newWorker.state === 'installed' && navigator.serviceWorker.controller){
+              showUpdateBar();
+            }
+          });
+        });
+        navigator.serviceWorker.addEventListener('controllerchange', ()=> window.location.reload());
+      }catch(e){ console.warn('SW reg failed', e); }
+    });
+  }
+  function showUpdateBar(){ updateBar.style.display='inline-flex'; }
+  function reloadForUpdate(){ swReg && swReg.waiting && swReg.waiting.postMessage({type:'SKIP_WAITING'}); }
+
+  // ====== INIT ======
+  document.getElementById('year').textContent = new Date().getFullYear();
+  (async function init(){
+    await loadConfig();
+    await loadProducts();
+  })();
+  </script>
+</body>
+</html>
