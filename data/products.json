@@ -1,0 +1,78 @@
+[
+  {
+    "id": "p1001",
+    "name": "প্রিমিয়াম স্নিকার্স",
+    "price": 2390,
+    "oldPrice": 2990,
+    "tags": ["shoe", "men", "sneaker"],
+    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop",
+    "fbPost": "https://www.facebook.com/RetailBDMart/posts/1001",
+    "badge": "-20%",
+    "createdAt": 1727400000000
+  },
+  {
+    "id": "p1002",
+    "name": "ক্লাসিক রিস্টওয়াচ",
+    "price": 1990,
+    "tags": ["watch", "men", "accessories"],
+    "image": "https://images.unsplash.com/photo-1518544801976-3e188ea1f57c?q=80&w=1200&auto=format&fit=crop",
+    "fbPost": "https://www.facebook.com/RetailBDMart/posts/1002",
+    "badge": "নতুন",
+    "createdAt": 1727486400000
+  },
+  {
+    "id": "p1003",
+    "name": "লেদার টোট ব্যাগ",
+    "price": 2790,
+    "tags": ["bag", "women", "leather"],
+    "image": "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=1200&auto=format&fit=crop",
+    "fbPost": "https://www.facebook.com/RetailBDMart/posts/1003",
+    "createdAt": 1727572800000
+  },
+  {
+    "id": "p1004",
+    "name": "ওয়্যারলেস হেডফোন",
+    "price": 1590,
+    "tags": ["headphone", "gadget", "electronics"],
+    "image": "https://images.unsplash.com/photo-1518444057429-831788f0d8a5?q=80&w=1200&auto=format&fit=crop",
+    "fbPost": "https://www.facebook.com/RetailBDMart/posts/1004",
+    "createdAt": 1727659200000
+  },
+  {
+    "id": "p1005",
+    "name": "সিগনেচার পারফিউম",
+    "price": 990,
+    "tags": ["perfume", "fragrance", "unisex"],
+    "image": "https://images.unsplash.com/photo-1523293182086-7651a899d37f?q=80&w=1200&auto=format&fit=crop",
+    "fbPost": "https://www.facebook.com/RetailBDMart/posts/1005",
+    "createdAt": 1727745600000
+  },
+  {
+    "id": "p1006",
+    "name": "ওভারসাইজড টি-শার্ট",
+    "price": 790,
+    "tags": ["tshirt", "men", "fashion"],
+    "image": "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1200&auto=format&fit=crop",
+    "fbPost": "https://www.facebook.com/RetailBDMart/posts/1006",
+    "createdAt": 1727832000000
+  },
+  {
+    "id": "p1007",
+    "name": "স্পোর্টস জুতো",
+    "price": 1890,
+    "tags": ["shoe", "sports", "men"],
+    "image": "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?q=80&w=1200&auto=format&fit=crop",
+    "fbPost": "https://www.facebook.com/RetailBDMart/posts/1007",
+    "badge": "Hot",
+    "createdAt": 1727918400000
+  },
+  {
+    "id": "p1008",
+    "name": "স্মার্টফোন কভার",
+    "price": 290,
+    "tags": ["accessories", "mobile"],
+    "image": "https://images.unsplash.com/photo-1585386959984-a41552231635?q=80&w=1200&auto=format&fit=crop",
+    "fbPost": "https://www.facebook.com/RetailBDMart/posts/1008",
+    "createdAt": 1728004800000
+  }
+]
